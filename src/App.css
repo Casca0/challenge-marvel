@@ -1,10 +1,8 @@
 #root {
-  max-width: 1280px;
   margin: 0;
 }
 
 main {
-	width: 100vw;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -22,4 +20,60 @@ main section h1 {
 main section p {
 	margin: 0;
 	color: #8c8c8c
+}
+
+.search {
+	display: flex;
+	align-items: center;
+	background-color: #fdecec;
+	width: 400px;
+	margin-top: 35px;
+	padding: 15px;
+	border-radius: 50px;
+}
+
+.search label {
+	margin: 0 15px;
+}
+
+.search input {
+	background-color: transparent;
+	outline: none;
+	border: none;
+	color: #ff1510;
+	width: 200px;
+	height: 30px;
+	font-size: medium;
+}
+
+.search input::placeholder {
+	color: #ff1510;
+}
+
+.loader {
+	width: 48px;
+	height: 48px;
+	border: 5px solid #FFF;
+	border-bottom-color: #FF1510;
+	border-radius: 50%;
+	margin-top: 45px;
+	display: inline-block;
+	box-sizing: border-box;
+	animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+	0% {
+			transform: rotate(0deg);
+	}
+	100% {
+			transform: rotate(360deg);
+	}
+} 
+
+.listHeroes {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	width: 100%;
 }

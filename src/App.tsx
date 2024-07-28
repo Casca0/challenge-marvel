@@ -3,30 +3,34 @@ import md5 from 'md5';
 import axios from 'axios';
 
 import './App.css';
-import LogoMarvel from './assets/AssetsScript/LogoMarvel';
+import LogoMarvel from './assets/AssetsComponents/LogoMarvel';
+import Lupa from './assets/AssetsComponents/Lupa';
+import Heroes from './components/Heroes';
 
 function App() {
-	// Essas keys ficariam em um arquivo .env
-
-	const publicKey = '941622d8572b1aa1a1903e04314670a6';
-	const privateKey = '2a532dfd2eaf7c1a005ee7e7787590af9e16cb45';
+	const publicKey = import.meta.env.VITE_PUBLIC_KEY;
+	const privateKey = import.meta.env.VITE_PRIVATE_KEY;
 	const timestamp = new Date().getTime().toString();
 	const apiHash = md5(timestamp + privateKey + publicKey);
 
 	const [apiUrl, setApiUrl] = useState(
 		`https://gateway.marvel.com/v1/public/characters?ts=${timestamp}&apikey=${publicKey}&hash=${apiHash}`
 	);
-	const [heroes, setHeroes] = useState(null);
+	const [heroes, setHeroes] = useState([]);
 	const [loading, setLoading] = useState<boolean>(true);
+	const [error, setError] = useState<boolean>(false);
 
 	useEffect(() => {
 		const fetchHeroes = async () => {
-			const apiRes = await axios.get(apiUrl);
-			setHeroes(apiRes.data.data.results);
+			const apiRes = await axios.get(apiUrl).catch((reason) => {
+				setError(true);
+				console.log(reason.message);
+			});
+			setHeroes(apiRes?.data.data.results);
 			setLoading(false);
 		};
 
-		if (!heroes) {
+		if (heroes.length === 0) {
 			fetchHeroes();
 		}
 		return;
@@ -44,6 +48,26 @@ function App() {
 					você ama - e aqueles que você descobrirá em breve!
 				</p>
 			</section>
+			<div className='search'>
+				<label htmlFor='searchInput'>
+					<Lupa />
+				</label>
+				<input
+					type='search'
+					name='searchInput'
+					id='searchInput'
+					placeholder='Procure por heróis'
+				/>
+			</div>
+			{loading ? (
+				<span className='loader'></span>
+			) : (
+				<div className='listHeroes'>
+					{heroes?.map((hero) => (
+						<Heroes hero={hero} />
+					))}
+				</div>
+			)}
 		</main>
 	);
 }
