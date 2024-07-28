@@ -69,7 +69,75 @@ main section p {
 	100% {
 			transform: rotate(360deg);
 	}
-} 
+}
+
+.heroesHeader {
+	width: 80%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.heroesHeader h3 {
+	color: #8C8C8C;
+}
+
+.sortFilter {
+	display: flex;
+	align-items: center;
+	justify-content: space-evenly;
+	width: 30%;
+}
+
+.sortFilter p {
+	color: #FF1510;
+}
+
+.switch {
+  display: inline-block;
+  height: 24px;
+  position: relative;
+  width: 40px;
+}
+
+.switch input {
+  display:none;
+}
+
+.slider {
+  background-color: #ccc;
+	width: 40px;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: .4s;
+}
+
+.slider:before {
+  background-color: #FF1510;
+  bottom: 4px;
+  content: "";
+  height: 14px;
+  left: 4px;
+  position: absolute;
+  transition: .4s;
+  width: 14px;
+}
+
+input:checked + .slider:before {
+  transform: translateX(18px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
 
 .listHeroes {
 	display: flex;

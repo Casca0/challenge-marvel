@@ -7,3 +7,8 @@
 	height: 30vh;
 	border-bottom: 5px solid #ff1510;
 }
+
+.heroCard h4 {
+	font-size: small;
+	color: #404040;
+}

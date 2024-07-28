@@ -6,6 +6,7 @@ import './App.css';
 import LogoMarvel from './assets/AssetsComponents/LogoMarvel';
 import Lupa from './assets/AssetsComponents/Lupa';
 import Heroes from './components/Heroes';
+import HeroLogo from './assets/AssetsComponents/HeroLogo';
 
 function App() {
 	const publicKey = import.meta.env.VITE_PUBLIC_KEY;
@@ -19,6 +20,7 @@ function App() {
 	const [heroes, setHeroes] = useState([]);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<boolean>(false);
+	const [sort, setSort] = useState<boolean>(false);
 
 	useEffect(() => {
 		const fetchHeroes = async () => {
@@ -35,6 +37,18 @@ function App() {
 		}
 		return;
 	}, [heroes, apiUrl]);
+
+	const sortedHeroesArr = heroes.slice();
+
+	sortedHeroesArr.sort((a: unknown, b: unknown) => {
+		const heroNameA = a.name.toUpperCase();
+		const heroNameB = b.name.toUpperCase();
+		return heroNameA < heroNameB ? -1 : heroNameA > heroNameB ? 1 : 0;
+	});
+
+	const handleOnChange = () => {
+		setSort(!sort);
+	};
 
 	return (
 		<main>
@@ -59,19 +73,44 @@ function App() {
 					placeholder='Procure por heróis'
 				/>
 			</div>
+			{error && <div>Ocorreu um erro na requisição!</div>}
 			{loading ? (
 				<span className='loader'></span>
 			) : (
-				<div className='listHeroes'>
-					{heroes?.map((hero) => (
-						<Heroes hero={hero} />
-					))}
-				</div>
+				<>
+					<div className='heroesHeader'>
+						<h3>Encontrados {heroes.length} heróis</h3>
+						<div className='sortFilter'>
+							<HeroLogo />
+							<p>Ordenar por nome - A/Z</p>
+							<label
+								htmlFor='checkbox'
+								className='switch'>
+								<input
+									type='checkbox'
+									id='checkbox'
+									onChange={handleOnChange}
+								/>
+								<div className='slider round'></div>
+							</label>
+						</div>
+					</div>
+					<div className='listHeroes'>
+						{!sort
+							? heroes?.map((hero) => <Heroes hero={hero} />)
+							: sortedHeroesArr.map((hero) => <Heroes hero={hero} />)}
+					</div>
+				</>
 			)}
 		</main>
 	);
 }
 
 export default App;
+
+
+
+
+
 
 
