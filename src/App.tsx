@@ -62,7 +62,7 @@ function App() {
 
 	// O resultado da API já vem organizado alfabeticamente
 
-	sortedHeroesArr.sort((a: unknown, b: unknown) => {
+	sortedHeroesArr.sort((a: any, b: any) => {
 		const heroNameA = a.name.toUpperCase();
 		const heroNameB = b.name.toUpperCase();
 		return heroNameA < heroNameB ? -1 : heroNameA > heroNameB ? 1 : 0;
@@ -76,7 +76,7 @@ function App() {
 		const searchValue = e.target.value;
 		setSearchTerm(searchValue);
 
-		const filteredHeroes = heroes.filter((hero) =>
+		const filteredHeroes = heroes.filter((hero: any) =>
 			hero.name.toLowerCase().includes(searchValue.toLowerCase())
 		);
 
@@ -154,6 +154,7 @@ function App() {
 }
 
 export default App;
+
 
 
 

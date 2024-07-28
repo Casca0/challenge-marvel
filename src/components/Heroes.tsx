@@ -2,7 +2,7 @@ import { useFavorites } from '../provider';
 import './Hero.css';
 import Heart from '../assets/AssetsComponents/Heart';
 
-export default function Heroes({ hero }) {
+export default function Heroes({ hero }: { hero: any }) {
 	const { favorites, setFavorites } = useFavorites();
 
 	const handleOnChange = (
@@ -12,14 +12,14 @@ export default function Heroes({ hero }) {
 		if (
 			event.target.checked &&
 			favorites.length < 5 &&
-			!favorites.find((hero) => hero.id === id)
+			!favorites.find((hero: any) => hero.id === id)
 		) {
 			const tempArr = favorites.slice();
 			tempArr.push(hero);
 			setFavorites(tempArr);
-		} else if (favorites.find((hero) => hero.id === id)) {
+		} else if (favorites.find((hero: any) => hero.id === id)) {
 			const tempArr = favorites.slice();
-			const index = tempArr.indexOf((hero) => hero.id === id);
+			const index = tempArr.indexOf((hero: any) => hero.id === id);
 			tempArr.splice(index, 1);
 			setFavorites(tempArr);
 		}
@@ -42,7 +42,7 @@ export default function Heroes({ hero }) {
 					className='favoriteInput'>
 					<Heart
 						favorite={
-							favorites.find((obj) => obj.id === hero.id) ? true : false
+							favorites.find((obj: any) => obj.id === hero.id) ? true : false
 						}
 					/>
 					<input
