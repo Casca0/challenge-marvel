@@ -72,10 +72,10 @@ main section p {
 }
 
 .heroesHeader {
-	width: 80%;
+	width: 100%;
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	justify-content: space-around;
 }
 
 .heroesHeader h3 {
@@ -91,6 +91,10 @@ main section p {
 
 .sortFilter p {
 	color: #FF1510;
+}
+
+.favoriteFilter input {
+	display: none;
 }
 
 .switch {

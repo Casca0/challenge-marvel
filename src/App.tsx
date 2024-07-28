@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import { useState, useEffect } from 'react';
 import md5 from 'md5';
 import axios from 'axios';
@@ -7,6 +8,8 @@ import LogoMarvel from './assets/AssetsComponents/LogoMarvel';
 import Lupa from './assets/AssetsComponents/Lupa';
 import Heroes from './components/Heroes';
 import HeroLogo from './assets/AssetsComponents/HeroLogo';
+import Heart from './assets/AssetsComponents/Heart';
+import { useFavorites } from './provider';
 
 function App() {
 	const publicKey = import.meta.env.VITE_PUBLIC_KEY;
@@ -21,6 +24,9 @@ function App() {
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<boolean>(false);
 	const [sort, setSort] = useState<boolean>(false);
+	const [favoriteFilter, setFavoriteFilter] = useState<boolean>(false);
+
+	const { favorites } = useFavorites();
 
 	useEffect(() => {
 		const fetchHeroes = async () => {
@@ -40,6 +46,8 @@ function App() {
 
 	const sortedHeroesArr = heroes.slice();
 
+	// O resultado da API já vem organizado alfabeticamente
+
 	sortedHeroesArr.sort((a: unknown, b: unknown) => {
 		const heroNameA = a.name.toUpperCase();
 		const heroNameB = b.name.toUpperCase();
@@ -49,6 +57,16 @@ function App() {
 	const handleOnChange = () => {
 		setSort(!sort);
 	};
+
+	function renderHeroes() {
+		if (sort) {
+			return sortedHeroesArr.map((hero) => <Heroes hero={hero} />);
+		} else if (favoriteFilter) {
+			return favorites.map((hero) => <Heroes hero={hero} />);
+		} else {
+			return heroes?.map((hero) => <Heroes hero={hero} />);
+		}
+	}
 
 	return (
 		<main>
@@ -93,13 +111,21 @@ function App() {
 								/>
 								<div className='slider round'></div>
 							</label>
+							<label
+								htmlFor='favoriteFilter'
+								className='favoriteFilter'>
+								<Heart favorite={favoriteFilter} />
+								<input
+									type='checkbox'
+									name='favoriteFilter'
+									id='favoriteFilter'
+									onChange={() => setFavoriteFilter(!favoriteFilter)}
+								/>
+							</label>
+							<p>Somente favoritos</p>
 						</div>
 					</div>
-					<div className='listHeroes'>
-						{!sort
-							? heroes?.map((hero) => <Heroes hero={hero} />)
-							: sortedHeroesArr.map((hero) => <Heroes hero={hero} />)}
-					</div>
+					<div className='listHeroes'>{renderHeroes()}</div>
 				</>
 			)}
 		</main>
@@ -107,10 +133,4 @@ function App() {
 }
 
 export default App;
-
-
-
-
-
-
 

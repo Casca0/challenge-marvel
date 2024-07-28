@@ -8,7 +8,17 @@
 	border-bottom: 5px solid #ff1510;
 }
 
-.heroCard h4 {
+.heroFooter {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.heroFooter h4 {
 	font-size: small;
 	color: #404040;
+}
+
+.favoriteInput input {
+	display: none;
 }
