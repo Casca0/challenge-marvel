@@ -16,15 +16,15 @@ function App() {
 	const privateKey = import.meta.env.VITE_PRIVATE_KEY;
 	const timestamp = new Date().getTime().toString();
 	const apiHash = md5(timestamp + privateKey + publicKey);
+	const apiUrl = `https://gateway.marvel.com/v1/public/characters?ts=${timestamp}&apikey=${publicKey}&hash=${apiHash}`;
 
-	const [apiUrl, setApiUrl] = useState(
-		`https://gateway.marvel.com/v1/public/characters?ts=${timestamp}&apikey=${publicKey}&hash=${apiHash}`
-	);
 	const [heroes, setHeroes] = useState([]);
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<boolean>(false);
 	const [sort, setSort] = useState<boolean>(false);
 	const [favoriteFilter, setFavoriteFilter] = useState<boolean>(false);
+	const [visibleHeroes, setVisibleHeroes] = useState<any[]>([]);
+	const [searchTerm, setSearchTerm] = useState<string>('');
 
 	const { favorites } = useFavorites();
 
@@ -35,6 +35,7 @@ function App() {
 				console.log(reason.message);
 			});
 			setHeroes(apiRes?.data.data.results);
+			setVisibleHeroes(apiRes?.data.data.results);
 			setLoading(false);
 		};
 
@@ -43,6 +44,19 @@ function App() {
 		}
 		return;
 	}, [heroes, apiUrl]);
+
+	useEffect(() => {
+		function renderHeroes() {
+			if (sort) {
+				setVisibleHeroes(sortedHeroesArr);
+				return;
+			} else if (favoriteFilter) {
+				setVisibleHeroes(favorites);
+				return;
+			}
+		}
+		renderHeroes();
+	});
 
 	const sortedHeroesArr = heroes.slice();
 
@@ -58,15 +72,16 @@ function App() {
 		setSort(!sort);
 	};
 
-	function renderHeroes() {
-		if (sort) {
-			return sortedHeroesArr.map((hero) => <Heroes hero={hero} />);
-		} else if (favoriteFilter) {
-			return favorites.map((hero) => <Heroes hero={hero} />);
-		} else {
-			return heroes?.map((hero) => <Heroes hero={hero} />);
-		}
-	}
+	const handleHeroSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const searchValue = e.target.value;
+		setSearchTerm(searchValue);
+
+		const filteredHeroes = heroes.filter((hero) =>
+			hero.name.toLowerCase().includes(searchValue.toLowerCase())
+		);
+
+		setVisibleHeroes(filteredHeroes);
+	};
 
 	return (
 		<main>
@@ -88,6 +103,8 @@ function App() {
 					type='search'
 					name='searchInput'
 					id='searchInput'
+					value={searchTerm}
+					onChange={handleHeroSearch}
 					placeholder='Procure por heróis'
 				/>
 			</div>
@@ -125,7 +142,11 @@ function App() {
 							<p>Somente favoritos</p>
 						</div>
 					</div>
-					<div className='listHeroes'>{renderHeroes()}</div>
+					<div className='listHeroes'>
+						{visibleHeroes.map((hero) => (
+							<Heroes hero={hero} />
+						))}
+					</div>
 				</>
 			)}
 		</main>
@@ -133,4 +154,29 @@ function App() {
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

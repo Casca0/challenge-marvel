@@ -5,7 +5,10 @@ import Heart from '../assets/AssetsComponents/Heart';
 export default function Heroes({ hero }) {
 	const { favorites, setFavorites } = useFavorites();
 
-	const handleOnChange = (event, id) => {
+	const handleOnChange = (
+		event: React.ChangeEvent<HTMLInputElement>,
+		id: number
+	) => {
 		if (
 			event.target.checked &&
 			favorites.length < 5 &&
