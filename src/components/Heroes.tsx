@@ -10,6 +10,10 @@ export default function Heroes({ hero }: { hero: any }) {
 		event: React.ChangeEvent<HTMLInputElement>,
 		id: number
 	) => {
+		if (!sessionStorage.getItem('favorites')) {
+			sessionStorage.setItem('favorites', JSON.stringify(favorites));
+		}
+
 		if (
 			event.target.checked &&
 			favorites.length < 5 &&
@@ -18,12 +22,16 @@ export default function Heroes({ hero }: { hero: any }) {
 			const tempArr = favorites.slice();
 			tempArr.push(hero);
 			setFavorites(tempArr);
+			sessionStorage.setItem('favorites', JSON.stringify(tempArr));
 		} else if (favorites.find((hero: any) => hero.id === id)) {
 			const tempArr = favorites.slice();
-			const index = tempArr.indexOf((hero: any) => hero.id === id);
+			const index = tempArr.findIndex((hero: any) => hero.id == id);
 			tempArr.splice(index, 1);
 			setFavorites(tempArr);
+			sessionStorage.setItem('favorites', JSON.stringify(tempArr));
 		}
+
+		setFavorites(JSON.parse(sessionStorage.getItem('favorites')!));
 	};
 
 	function openDetails(hero: any) {

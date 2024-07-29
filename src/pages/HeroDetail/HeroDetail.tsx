@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import ComicBook from '../../assets/AssetsComponents/ComicBook';
 import Heart from '../../assets/AssetsComponents/Heart';
 import LogoMarvel from '../../assets/AssetsComponents/LogoMarvel';
@@ -11,7 +12,13 @@ export default function HeroDetail() {
 	const { favorites, setFavorites } = useFavorites();
 	const { heroDetail, setPage } = usePages();
 
-	console.log(heroDetail);
+	useEffect(() => {
+		if (!sessionStorage.getItem('favorites')) {
+			sessionStorage.setItem('favorites', JSON.stringify(favorites));
+		}
+
+		setFavorites(JSON.parse(sessionStorage.getItem('favorites')!));
+	}, [favorites, setFavorites]);
 
 	const heroDate = new Date(`${heroDetail.modified}`);
 	const heroComics = heroDetail.comics.items.slice(0, 10);

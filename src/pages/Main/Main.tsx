@@ -22,7 +22,7 @@ function Main() {
 	const [loading, setLoading] = useState<boolean>(true);
 	const [error, setError] = useState<boolean>(false);
 	const [sort, setSort] = useState<boolean>(false);
-	const [favoriteFilter, setFavoriteFilter] = useState<boolean>(false);
+	const [favoriteFilter, setFavoriteFilter] = useState<boolean>(true);
 	const [visibleHeroes, setVisibleHeroes] = useState<any[]>([]);
 	const [searchTerm, setSearchTerm] = useState<string>('');
 
@@ -162,4 +162,5 @@ function Main() {
 }
 
 export default Main;
+
 
