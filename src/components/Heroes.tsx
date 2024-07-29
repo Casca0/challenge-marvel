@@ -1,9 +1,10 @@
-import { useFavorites } from '../provider';
+import { useFavorites, usePages } from '../provider';
 import './Hero.css';
 import Heart from '../assets/AssetsComponents/Heart';
 
 export default function Heroes({ hero }: { hero: any }) {
 	const { favorites, setFavorites } = useFavorites();
+	const { setPage, setHeroDetail } = usePages();
 
 	const handleOnChange = (
 		event: React.ChangeEvent<HTMLInputElement>,
@@ -25,6 +26,12 @@ export default function Heroes({ hero }: { hero: any }) {
 		}
 	};
 
+	function openDetails(hero: any) {
+		setPage('hero');
+		setHeroDetail(hero);
+		return;
+	}
+
 	return (
 		<div
 			className='heroCard'
@@ -32,6 +39,7 @@ export default function Heroes({ hero }: { hero: any }) {
 			<img
 				src={`${hero.thumbnail.path}.${hero.thumbnail.extension}`}
 				alt={hero.name}
+				onClick={() => openDetails(hero)}
 			/>
 			<div className='heroFooter'>
 				<div className='heroName'>
